@@ -1,4 +1,4 @@
-a# made by shimmy zalesch started ~2025-2-1
+# made by shimmy zalesch started ~2025-2-1
 #returns a sudoku and it's answer
 
 #imports
