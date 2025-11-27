@@ -5,7 +5,7 @@
 import random
 
 #declare the current sudoku answer
-sudokuAnswer = [
+blankSudoku = [
  [0, 0, 0, 0, 0, 0, 0, 0, 0],
  [0, 0, 0, 0, 0, 0, 0, 0, 0],
  [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -74,7 +74,7 @@ def conflictingSquares(Arr, squareCoordinates):
  # find where in the box the square is in
  indexSquareIsIn = squareCoordinates[0]%3 *3 + squareCoordinates[1]%3
  issuesInBox = findConflictsInList(box, indexSquareIsIn)
-  
+
  i=0 
  while i<len(issuesInBox):
    coordsOfSquare = [boxX*3+issuesInBox[i]//3, boxY*3+issuesInBox[i]%3]                                         
@@ -166,7 +166,7 @@ def addSquare(squareToCheck):
      sudokuAnswer = attemptedSudoku
      break
    i+=1
-   
+
  conflicts = [squareToCheck]
 
  # loop until sudoku is possible
@@ -176,7 +176,7 @@ def addSquare(squareToCheck):
    currentValue = sudokuAnswer[conflicts[0][0]][conflicts[0][1]]
    ties = [sudokuAnswer]
    lastRepititionTies = [[[]]]
-   
+
    noIssues = False
    i = 0
    while len(ties) > 1 or i==0:
@@ -216,11 +216,11 @@ def addSquare(squareToCheck):
          k+=1
 
        while l < 8 and len(issuesInlastGenTiesComplete) != 0: #find the current best candidate(s)'s isues left
-        
+
          issuesInlastGenTies = issuesInlastGenTiesComplete[j]
 
          tiesToImproove = lastRepititionTies[j]
-                
+
          squaresToTry = [1, 2, 3, 4, 5, 6, 7, 8, 9]
          squaresToTry.pop(tiesToImproove[issuesInlastGenTies[0][0]][issuesInlastGenTies[0][1]]-1)
 
@@ -237,14 +237,14 @@ def addSquare(squareToCheck):
          noIssues = True
          sudokuAnswer = lastRepititionTies[0]
          return()
-      
+
        else:
 
          tieToImproove = lastRepititionTies[j]
 
          squaresToTry = [1, 2, 3, 4, 5, 6, 7, 8, 9]
          squaresToTry.pop(tiesToImproove[issuesInlastGenTies[0][0]][issuesInlastGenTies[0][1]]-1) # make sure code doesn’t keep the number the same
-        
+
          l = 0
          while l < 8: # find all the sudokus that are still deacent enough to keep seeing if best candidate
 
@@ -254,11 +254,11 @@ def addSquare(squareToCheck):
              ties.append(tiesToImproove)
            l +=1
          i+=1
-     
+
      ties = removeBlanks3D(ties)
      ties = removeBlanks2D(ties)
      ties = removeDuplicates(ties)
-     
+
      conflicts = [[]]
      if len(conflicts) > 0 and len(ties)>0:
        l=0
@@ -272,6 +272,8 @@ def addSquare(squareToCheck):
 
 #makes a filled out sudoku
 def makeOneSudoku():
+ global sudokuAnswer
+ sudokuAnswer = blankSudoku
  row = 0
  while row < 9:
    column = 0
@@ -279,10 +281,11 @@ def makeOneSudoku():
      addSquare([row, column])
      column += 1
    row += 1
+   return(sudokuAnswer)
 
 #makes any amount of filled out sudokus
 def makeManySudokus(amount):
-  sudokus=[[[]]]
+  sudokus=[]
   i=0
   while i<amount:
     sudokus.append(makeOneSudoku())
